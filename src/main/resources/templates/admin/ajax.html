@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/default">
+
+<head>
+    <title>form</title>
+</head>
+
+<!-- board.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+</th:block>
+
+<!-- board.html 고유 script 추가 -->
+<th:block layout:fragment="script">
+</th:block><html xmlns:th="http://www.thymeleaf.org">
+<div layout:fragment="content">
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+
+</head>
+<body>
+<h2>UNESCO meeting summary</h2>
+<script type="text/javascript">
+    var xmlhttp = new XMLHttpRequest();
+    var url = "http://search.ichngo.net/admin/test2.json";
+
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            myfunc(xmlhttp.responseText);
+        }
+    };
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+
+    function myfunc(resp) {
+        var arr = JSON.parse(resp);
+        var out = "<table border='1'>"+"<tr>"+
+            "<td>"+ "Title"+ "</td>" +
+            "<td>"+ "Key words(heigh percentage is the main)" + "</td>" +
+            "<td>"+ "summary" + "</td>" +
+            "</tr>";
+
+        for (var i = 0; i < arr.length; i++) {
+            out+=
+                "<tr>"+
+                "<td>"+ arr[i].title + "</td>" +
+                "<td>"+ arr[i].word + "</td>" +
+                "<td>"+ arr[i].summary + "</td>" +
+                "</tr>";
+        }
+        document.getElementById('demo').innerHTML = out;
+    }
+</script>
+</body>
+</html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+
+<input type="hidden" id="Pname">
+<br>
+<select id="Pname1">
+</select><button type="button" id="btn2">이름으로 찾기</button>
+
+<p id="comeonSolo"></p>
+<p id="comeonDuo"></p>
+<div id="chartdiv"></div>
+<p id="demo"></p>
+
+
+
+</body>
+
+</html>
+<!-- Chart code -->
+<!-- Styles -->
+<script>
+    $.getJSON("http://search.ichngo.net/admin/test2.json",
+        function (json) {
+            $.each(json,
+                function (key, value) {
+                    $("#Pname1").append("<option value='" + value.title + "'>" + value.title + "</option>");
+                });
+        });
+</script>
+<!-- Resources -->
+<script type="text/javascript">
+    $("button").click(
+        function() {
+
+
+            var btnId = this.id;
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4
+                    && xhttp.status == 200) {
+                    myfunc(xhttp.responseText, btnId);
+                }
+            }
+            xhttp.open("GET", "http://search.ichngo.net/admin/test2.json", false);
+            xhttp.send();
+
+
+
+// Add data
+
+            function myfunc(resp, id) {
+                arr = JSON.parse(resp);
+                out = "";
+                arr2 = [];
+                arr3 = [];
+                for (var i = 0; i < arr.length; i++) {
+
+                    for (key in arr[i]) {
+                        if (id == "btn1") {
+                            if (key == $("#Pname").val()) {
+                                out += arr[i][key] + "<br>";
+                                break;
+                            }
+                        } else if (id == "btn2") {
+                            if (arr[i][key] == $("#Pname1")
+                                .val()) {
+                                var out = "<table border='1'>"
+                                +"<tr>"+
+                                "<td>"+ "title" + "</td>" +
+                                "<td>"+ "Key words(High percentage is the main)" + "</td>" +
+                                "<td>"+ "Summary" + "</td>" +
+                                "</tr>";
+                                out+=
+                                    "<tr>"+
+                                    "<td>"+ arr[i].title + "</td>" +
+                                    "<td>"+ arr[i].word + "</td>" +
+                                    "<td>"+ arr[i].summary + "</td>" +
+                                    "</tr>";
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
+                if (id == "btn1") {
+                    document.getElementById("comeonSolo").innerHTML = out;
+                    return;
+
+                } else if (id == "btn2") {
+                    document.getElementById("comeonDuo").innerHTML = out;
+                    jQuery('#btn2').click()
+                    return;
+            }
+        }
+        });
+
+</script>
+
+
+
+
+</div>
+</html>
+
+</div>
+</body>
+</html>
