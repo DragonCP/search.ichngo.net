@@ -1,4 +1,4 @@
-# 게시판
+# search.ichngo.net
 - used technique
     - springboot
     - jpa
@@ -11,6 +11,7 @@
     - page : localhost:9090/boards
     - db : localhost:9090/console
         - Driver Class : org.h2.Driver
-        - JDBC URL : jdbc:h2:mem:board
-        - User Name : board
-        - Passwrod : 
+        - JDBC URL : jdbc:mysql://localhost:3306/mysql81?serverTimezone=UTC&characterEncoding=UTF-8
+        - User Name : admin
+        - Passwrod : admin
+        
